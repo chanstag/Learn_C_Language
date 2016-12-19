@@ -8,6 +8,27 @@ struct LLNode{
     LLNode *next;
 };
 
+LLNode* insert(LLNode *head, LLNode *new, LLNode *after){
+
+    if(head == NULL  && after != NULL || new == NULL){
+        return head;
+    }
+
+    if(after == NULL){
+        (*new).next = head;
+        head = new;
+        return head; 
+    }
+
+    else{
+        (*new).next = (*after).next;
+        (*after).next = new;
+        return head; 
+    }
+    return head; 
+    
+}
+
 int main(){
 
     printf("1");
@@ -31,28 +52,19 @@ int main(){
         printf("%d", (*head).value); 
         head = (*head).next;
     }
+    head = &start;
+
+    LLNode to_insert;
+    to_insert.value = 4;
+    insert(head, &to_insert, &n1);
+
+    printf("\n");
+    while(head != NULL){
+        printf("%d", (*head).value );
+        head = (*head).next;
+    }
+
     return 0;
     }
 
 
-/*
-LLNode* insert(LLNode *head, LLNode *new, LLNode *after){
-
-    if(head == NULL  && after != NULL || new == NULL){
-        return head;
-    }
-
-    if(after == NULL){
-        (*new).next = head;
-        head = new;
-        return head; 
-    }
-
-    else{
-        (*new).next = (*after).next;
-        (*after).next = new;
-        return head; 
-    }
-    return head; 
-    
-}*/
