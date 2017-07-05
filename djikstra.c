@@ -44,14 +44,15 @@ int main(){
 
 
 }	 
-
-int djikstra(int **graph,int size, source){
+//Purpose: main driving djikstra program 
+int djikstra(int **graph,int size,int source){
 	int distance[size];
 	int previous[size];
-	bool nodes[size] 
+	_Bool unvisitednodes[size]; 
 	for(int  i = 0; i < size; i++){
 		if(i == source){
 			distance[source] = 0;
+			unvisitednodes[source] = 0;
 		}
 
 		else{
@@ -59,32 +60,36 @@ int djikstra(int **graph,int size, source){
 		}
 		previous[i] = NULL; 
 		
-		nodes[i] = true; 
+		unvisitednodes[i] = 1; 
 	}
 
 	
-	int totaltrue = totalTrue(nodes, size);
-
+	int totaltrue = totalTrue(unvisitednodes, size);
+	int currentnode;
+	int neighbors[size]; 
 	while(totaltrue > 0){
 
 
-		int smallestdist = findSmallest(distance);
+		currentnode = findSmallest(distance);
+		unvisitednodes[currentnode] = 0;
+		
 
 	}
 
 }
-
-int totalTrue(bool *nodes, int size){
+//Purpose: to return the total of unvisited nodes so far  
+int totalTrue(_Bool *nodes, int size){
 	
-	int totaltrue
+	int totaltrue;
 	for(int k = 0; k < size; k++){
-		if(nodes[k] == true){
+		if(nodes[k] == 1){
 			totaltrue++; 
 		}
 
 	}
+	return totaltrue; 
 }
-
+//Purpose: find the smallest currently visible node
 int findSmallest(int *dist, int size){
 	int min = dist[0];
 	int index;
@@ -94,10 +99,30 @@ int findSmallest(int *dist, int size){
 			index = i;
 		} 	
 	}
+	return index; 
 }
 
 
+//Name: findNeighbors
+//Purpose: find all the neighbors of the currently visited node and return them
+void findNeighbors(int **graph,int size, int current){
 
+		
+		_Bool neighbors[size]; 
+		for(int j = 0; j < size; j++)
+		{
+			if(graph[current][j] > 0){
+				neighbors[j] = 1;
+		
+			}			
+
+			
+		}
+		return neighbors; 
+
+
+}
+//generate a graph for our program. This remains tentative to change.
 void buildMatrixGraph(int **graph, int size){ 
 	srand(time(NULL));
 	for (int i = 0; i < size; i++){
