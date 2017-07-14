@@ -66,17 +66,37 @@ int djikstra(int **graph,int size,int source){
 	
 	int totaltrue = totalTrue(unvisitednodes, size);
 	int currentnode;
-	int neighbors[size]; 
+	_Bool neighbors[size]; 
 	while(totaltrue > 0){
 
-
+		//find the next smallest distance
 		currentnode = findSmallest(distance);
+		//remove from visited list
 		unvisitednodes[currentnode] = 0;
+		
+		neighbors = findNeighbors(graph, size, currentnode);
+
+		//for each neighbor of currentnode update distance
+		for(int j = 0; j < size; j++){
+			
+			//1 indicates neighbor
+			if(neighbors[j] == 1){
+				int newroute = distance[j] + 
+
+			}
+
+		}
+		
 		
 
 	}
 
 }
+//Purpose: find the distance between the two given nodes
+int findDistanceBetween(int **graph, int size, ){
+
+}
+
 //Purpose: to return the total of unvisited nodes so far  
 int totalTrue(_Bool *nodes, int size){
 	
@@ -105,7 +125,7 @@ int findSmallest(int *dist, int size){
 
 //Name: findNeighbors
 //Purpose: find all the neighbors of the currently visited node and return them
-void findNeighbors(int **graph,int size, int current){
+_Bool* findNeighbors(int **graph,int size, int current){
 
 		
 		_Bool neighbors[size]; 
@@ -114,7 +134,10 @@ void findNeighbors(int **graph,int size, int current){
 			if(graph[current][j] > 0){
 				neighbors[j] = 1;
 		
-			}			
+			}
+			else{
+				neighbors[j] = 0; 
+			}	
 
 			
 		}
@@ -126,7 +149,7 @@ void findNeighbors(int **graph,int size, int current){
 void buildMatrixGraph(int **graph, int size){ 
 	srand(time(NULL));
 	for (int i = 0; i < size; i++){
-		for(int j = 0; j < size; j++){
+		for(int j = 0; j < size; j+){
 			int num = rand()%20;
 			if(num >= 10){
 				graph[i][j] = num%10;
