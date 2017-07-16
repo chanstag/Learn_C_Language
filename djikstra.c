@@ -11,13 +11,16 @@
 
 #define MAX 99
 
+
+void findNeighbors(int **graph,int size, int current, _Bool *neighbors);
+
 int main(){
 
 	char input[256];
 
 	printf("please enter an integer value: ");
 	fgets(input, 256, stdin);
-	printf("the value provided is: %d", atoi(input)); 
+	printf("the value provided is: %d\n", atoi(input)); 
 
 	int size = atoi(input);	
 	int **graph;
@@ -30,24 +33,26 @@ int main(){
 
 
 	buildMatrixGraph(graph, size);
+	int previous[size];
 
-
-	for(int i = 0; i < size;i++){
+/*	for(int i = 0; i < size;i++){
 		for(int j = 0; j < size; j++){
 			printf("value outside buildMatrixGraph: %d", graph[i][j]); 
 		}	
 	}
-
-
+*/
+	djikstra(graph, size, 1, previous);
 	
+	for(int k = 0; k < size; k++){
+		printf("Node: %d", previous[k]);
+	}	
 	return 0;
 
 
 }	 
 //Purpose: main driving djikstra program 
-int djikstra(int **graph,int size,int source){
+int djikstra(int **graph,int size,int source, int *previous){
 	int distance[size];
-	int previous[size];
 	_Bool unvisitednodes[size]; 
 	for(int  i = 0; i < size; i++){
 		if(i == source){
@@ -71,17 +76,23 @@ int djikstra(int **graph,int size,int source){
 
 		//find the next smallest distance
 		currentnode = findSmallest(distance);
+		printf("current %d", currentnode); 
 		//remove from visited list
 		unvisitednodes[currentnode] = 0;
-		
-		neighbors = findNeighbors(graph, size, currentnode);
+	
+		//get an array of neighbors from findNeighbors function	
+		//memcpy(neighbors, findNeighbors(graph, size, currentnode), sizeof(_Bool) * size);
 
+		findNeighbors(graph, size, currentnode, neighbors);
 		//for each neighbor of currentnode update distance
 		for(int j = 0; j < size; j++){
 			
 			//1 indicates neighbor
 			if(neighbors[j] == 1){
-				int newroute = distance[j] + 
+				int newroute = distance[currentnode] + findDistanceBetween(graph, size, currentnode, j);
+				if(newroute < distance[j]){
+					distance[j] = newroute;
+					previous[j] = currentnode;  
 
 			}
 
@@ -91,9 +102,14 @@ int djikstra(int **graph,int size,int source){
 
 	}
 
+	return previous; 
+
+}
 }
 //Purpose: find the distance between the two given nodes
-int findDistanceBetween(int **graph, int size, ){
+int findDistanceBetween(int **graph, int size,int current,int neighbor){
+	int totaldistance = graph[current][neighbor]; 
+	printf("distance bewteen current and neighbor: %d", totaldistance);
 
 }
 
@@ -125,13 +141,14 @@ int findSmallest(int *dist, int size){
 
 //Name: findNeighbors
 //Purpose: find all the neighbors of the currently visited node and return them
-_Bool* findNeighbors(int **graph,int size, int current){
+void findNeighbors(int **graph, int size, int current, _Bool *neighbors){
 
 		
-		_Bool neighbors[size]; 
 		for(int j = 0; j < size; j++)
 		{
-			if(graph[current][j] > 0){
+			printf("on node: %d", graph[current][j]);
+
+			if((graph[current][j] > 0) && (j != current)){
 				neighbors[j] = 1;
 		
 			}
@@ -141,25 +158,44 @@ _Bool* findNeighbors(int **graph,int size, int current){
 
 			
 		}
-		return neighbors; 
+		 
 
 
 }
 //generate a graph for our program. This remains tentative to change.
 void buildMatrixGraph(int **graph, int size){ 
 	srand(time(NULL));
-	for (int i = 0; i < size; i++){
-		for(int j = 0; j < size; j+){
+
+	int num = size; 
+	int row[size];
+	int col[size];
+	while(num > 0){
+		for (int i = size - num; i < size; i++){
 			int num = rand()%20;
-			if(num >= 10){
-				graph[i][j] = num%10;
+
+			else if(num >= 10){
+				row[i] = num%10;
 			}
 			else{
-				graph[i][j] = 0;
+				row[i] = 0;
 			}
-			printf("Value: %d", graph[i][j]);
+		}
+		for(int j = size - num; j < size; j++){
+			col[j] == row[j];	
+				
 		}   
-	} 
+		num--;
+		
+	}
+
+	for(int k = 0; k < size; k++){
+		for(int l = 0; l < size; l++){
+			printf("Value: %d", 
+		
+		}
+	}
+	
+	 
 
 	return; 
 
